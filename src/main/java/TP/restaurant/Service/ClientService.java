@@ -1,6 +1,8 @@
 package TP.restaurant.Service;
 
+import TP.restaurant.Dto.ClientDto;
 import TP.restaurant.Entity.Client;
+import TP.restaurant.Mapper.ClientMapper;
 import TP.restaurant.Repository.IClientRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,16 +11,20 @@ import java.util.Optional;
 @Service
 public class ClientService {
     private final IClientRepository clientRepository;
+    private final ClientMapper clientMapper;
 
-    public ClientService(IClientRepository clientRepository) {
+    public ClientService(IClientRepository clientRepository, ClientMapper clientMapper) {
         this.clientRepository = clientRepository;
+        this.clientMapper = clientMapper;
     }
 
-    public Client addClient(Client client) {
-        return clientRepository.save(client);
+    public ClientDto addClient(ClientDto clientDto) {
+        Client client = clientMapper.dtoToEntity(clientDto);
+        Client savedClient = clientRepository.save(client);
+        return clientMapper.entityToDto(savedClient);
     }
 
-    public Client updateClient(Long id, Client clientDetails) throws Exception {
+    public ClientDto updateClient(Long id, ClientDto clientDetails) throws Exception {
         Optional<Client> optionalClient = clientRepository.findById(id);
         if(optionalClient.isPresent()) {
             Client client = optionalClient.get();
@@ -28,7 +34,8 @@ public class ClientService {
             if (clientDetails.getEmail() != null) {
                 client.setEmail(clientDetails.getEmail());
             }
-            return clientRepository.save(client);
+            Client updatedClient = clientRepository.save(client);
+            return clientMapper.entityToDto(updatedClient);
         } else {
             throw new Exception("Client inconnu");
         }

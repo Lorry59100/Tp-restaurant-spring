@@ -1,6 +1,6 @@
 package TP.restaurant.Controller;
 
-import TP.restaurant.Entity.Dish;
+import TP.restaurant.Dto.DishDto;
 import TP.restaurant.Service.DishService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +17,14 @@ public class DishController {
     }
 
     @PostMapping
-    public ResponseEntity<Dish> addDish(@RequestBody Dish dish) {
-        Dish createdDish = dishService.addDish(dish);
+    public ResponseEntity<DishDto> addDish(@RequestBody DishDto dishDto) {
+        DishDto createdDish = dishService.addDish(dishDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdDish);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Dish> updateDish(@PathVariable Long id, @RequestBody Dish dish) throws Exception {
-        Dish updatedDish = dishService.updateDish(id, dish);
+    public ResponseEntity<DishDto> updateDish(@PathVariable Long id, @RequestBody DishDto dishDto) throws Exception {
+        DishDto updatedDish = dishService.updateDish(id, dishDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedDish);
     }
 

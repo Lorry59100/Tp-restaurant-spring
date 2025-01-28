@@ -1,6 +1,8 @@
 package TP.restaurant.Service;
 
+import TP.restaurant.Dto.DishDto;
 import TP.restaurant.Entity.Dish;
+import TP.restaurant.Mapper.DishMapper;
 import TP.restaurant.Repository.IDishRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,16 +12,20 @@ import java.util.Optional;
 public class DishService {
 
     private final IDishRepository dishRepository;
+    private final DishMapper dishMapper;
 
-    public DishService(IDishRepository dishRepository) {
+    public DishService(IDishRepository dishRepository, DishMapper dishMapper) {
         this.dishRepository = dishRepository;
+        this.dishMapper = dishMapper;
     }
 
-    public Dish addDish(Dish dish) {
-        return dishRepository.save(dish);
+    public DishDto addDish(DishDto dishDto) {
+        Dish dish = dishMapper.dtoToEntity(dishDto);
+        Dish savedDish = dishRepository.save(dish);
+        return dishMapper.entityToDto(savedDish);
     }
 
-    public Dish updateDish(Long id, Dish dishDetails) throws Exception {
+    public DishDto updateDish(Long id, DishDto dishDetails) throws Exception {
         Optional<Dish> optionalDish = dishRepository.findById(id);
         if(optionalDish.isPresent()) {
             Dish dish = optionalDish.get();
@@ -29,7 +35,8 @@ public class DishService {
             if(dishDetails.getPrice() != null) {
                 dish.setPrice(dishDetails.getPrice());
             }
-            return dishRepository.save(dish);
+            Dish updatedDish = dishRepository.save(dish);
+            return dishMapper.entityToDto(updatedDish);
         } else {
             throw new Exception("Plat inconnu");
         }
@@ -38,9 +45,9 @@ public class DishService {
     public String deleteDish(Long id) throws Exception {
         Optional<Dish> optionalDish = dishRepository.findById(id);
         if (optionalDish.isPresent()) {
-        Dish dish = optionalDish.get();
-        dishRepository.delete(dish);
-        return "Plat supprimé";
+            Dish dish = optionalDish.get();
+            dishRepository.delete(dish);
+            return "Plat supprimé";
         } else {
             throw new Exception("Plat inconnu");
         }

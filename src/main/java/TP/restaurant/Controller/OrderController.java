@@ -1,6 +1,6 @@
 package TP.restaurant.Controller;
 
-import TP.restaurant.Entity.Order;
+import TP.restaurant.Dto.OrderDto;
 import TP.restaurant.Service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,19 +15,21 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public Order placeOrder(@RequestBody Map<String, Long> requestBody) throws Exception {
+    public OrderDto placeOrder(@RequestBody Map<String, Long> requestBody) throws Exception {
         Long clientId = requestBody.get("clientId");
         Long dishId = requestBody.get("dishId");
         return orderService.placeOrder(clientId, dishId);
     }
 
     @PutMapping("/{id}")
-    public Order updateOrder(@PathVariable Long orderId, @RequestParam Long clientId, @RequestParam Long dishId) throws Exception {
-        return orderService.updateOrder(orderId, clientId, dishId);
+    public OrderDto validateOrder(@PathVariable Long id, @RequestBody Map<String, Long> requestBody) throws Exception {
+        Long clientId = requestBody.get("clientId");
+        return orderService.validateOrder(clientId, id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable Long orderId) throws Exception {
-        orderService.deleteOrder(orderId);
+    public OrderDto clearOrder(@PathVariable Long id, @RequestBody Map<String, Long> requestBody) throws Exception {
+        Long clientId = requestBody.get("clientId");
+        return orderService.clearOrder(clientId, id);
     }
 }

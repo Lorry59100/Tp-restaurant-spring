@@ -1,6 +1,6 @@
 package TP.restaurant.Controller;
 
-import TP.restaurant.Entity.Client;
+import TP.restaurant.Dto.ClientDto;
 import TP.restaurant.Service.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +16,14 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<Client> addClient(@RequestBody Client client) {
-        Client createdClient = clientService.addClient(client);
+    public ResponseEntity<ClientDto> addClient(@RequestBody ClientDto clientDto) {
+        ClientDto createdClient = clientService.addClient(clientDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdClient);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client client) throws Exception {
-        Client updatedClient = clientService.updateClient(id, client);
+    public ResponseEntity<ClientDto> updateClient(@PathVariable Long id, @RequestBody ClientDto clientDto) throws Exception {
+        ClientDto updatedClient = clientService.updateClient(id, clientDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedClient);
     }
 
