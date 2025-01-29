@@ -5,11 +5,12 @@ import TP.restaurant.Service.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
-    private final ClientService clientService;
+    private ClientService clientService;
 
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
@@ -17,14 +18,14 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<ClientDto> addClient(@RequestBody ClientDto clientDto) {
-        ClientDto createdClient = clientService.addClient(clientDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdClient);
+            ClientDto createdClient = clientService.addClient(clientDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdClient);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ClientDto> updateClient(@PathVariable Long id, @RequestBody ClientDto clientDto){
         ClientDto updatedClient = clientService.updateClient(id, clientDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(updatedClient);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedClient);
     }
 
     @DeleteMapping("/{id}")

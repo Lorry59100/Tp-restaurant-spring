@@ -19,6 +19,8 @@ public class Client {
     private Long id;
 
     @Column(unique = true)
+    @NotNull(message = "Le mail est obligatoire")
+    @NotBlank(message = "Le mail ne peut être vide")
     private String email;
 
     @NotNull(message = "Vous devez renseigner un nom")

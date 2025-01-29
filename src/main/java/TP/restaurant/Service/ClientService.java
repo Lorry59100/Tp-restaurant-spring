@@ -5,7 +5,10 @@ import TP.restaurant.Entity.Client;
 import TP.restaurant.Exception.ClientNotFoundException;
 import TP.restaurant.Mapper.ClientMapper;
 import TP.restaurant.Repository.IClientRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.Optional;
 
@@ -20,9 +23,13 @@ public class ClientService {
     }
 
     public ClientDto addClient(ClientDto clientDto) {
-        Client client = clientMapper.dtoToEntity(clientDto);
-        Client savedClient = clientRepository.save(client);
-        return clientMapper.entityToDto(savedClient);
+        try {
+            Client client = clientMapper.dtoToEntity(clientDto);
+            Client savedClient = clientRepository.save(client);
+            return clientMapper.entityToDto(savedClient);
+        } catch (Exception e) {
+            throw new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
+        }
     }
 
     public ClientDto updateClient(Long id, ClientDto clientDetails){
