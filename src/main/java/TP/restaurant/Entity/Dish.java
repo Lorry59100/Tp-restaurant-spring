@@ -2,6 +2,8 @@ package TP.restaurant.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,10 +19,11 @@ public class Dish {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull(message = "Vous devez renseigner un nom de plat")
+    @NotBlank(message = "Le nom du plat ne peut être vide")
     private String name;
 
-    @Column(nullable = false)
+    @NotNull(message = "Vous devez renseigner un prix")
     private Double price;
 
     @ManyToMany(mappedBy = "dishes")

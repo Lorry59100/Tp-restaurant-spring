@@ -2,6 +2,7 @@ package TP.restaurant.Service;
 
 import TP.restaurant.Dto.ClientDto;
 import TP.restaurant.Entity.Client;
+import TP.restaurant.Exception.ClientNotFoundException;
 import TP.restaurant.Mapper.ClientMapper;
 import TP.restaurant.Repository.IClientRepository;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class ClientService {
         return clientMapper.entityToDto(savedClient);
     }
 
-    public ClientDto updateClient(Long id, ClientDto clientDetails) throws Exception {
+    public ClientDto updateClient(Long id, ClientDto clientDetails){
         Optional<Client> optionalClient = clientRepository.findById(id);
         if(optionalClient.isPresent()) {
             Client client = optionalClient.get();
@@ -37,18 +38,18 @@ public class ClientService {
             Client updatedClient = clientRepository.save(client);
             return clientMapper.entityToDto(updatedClient);
         } else {
-            throw new Exception("Client inconnu");
+            throw new ClientNotFoundException("Client inconnu");
         }
     }
 
-    public String deleteClient(Long id) throws Exception {
+    public String deleteClient(Long id){
         Optional<Client> optionalClient = clientRepository.findById(id);
         if (optionalClient.isPresent()) {
             Client client = optionalClient.get();
             clientRepository.delete(client);
             return "Client supprimé";
         } else {
-            throw new Exception("Client inconnu");
+            throw new ClientNotFoundException("Client inconnu");
         }
     }
 }

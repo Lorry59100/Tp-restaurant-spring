@@ -2,6 +2,7 @@ package TP.restaurant.Service;
 
 import TP.restaurant.Dto.DishDto;
 import TP.restaurant.Entity.Dish;
+import TP.restaurant.Exception.DishNotFoundException;
 import TP.restaurant.Mapper.DishMapper;
 import TP.restaurant.Repository.IDishRepository;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class DishService {
         return dishMapper.entityToDto(savedDish);
     }
 
-    public DishDto updateDish(Long id, DishDto dishDetails) throws Exception {
+    public DishDto updateDish(Long id, DishDto dishDetails){
         Optional<Dish> optionalDish = dishRepository.findById(id);
         if(optionalDish.isPresent()) {
             Dish dish = optionalDish.get();
@@ -38,18 +39,18 @@ public class DishService {
             Dish updatedDish = dishRepository.save(dish);
             return dishMapper.entityToDto(updatedDish);
         } else {
-            throw new Exception("Plat inconnu");
+            throw new DishNotFoundException("Plat inconnu");
         }
     }
 
-    public String deleteDish(Long id) throws Exception {
+    public String deleteDish(Long id){
         Optional<Dish> optionalDish = dishRepository.findById(id);
         if (optionalDish.isPresent()) {
             Dish dish = optionalDish.get();
             dishRepository.delete(dish);
             return "Plat supprimé";
         } else {
-            throw new Exception("Plat inconnu");
+            throw new DishNotFoundException("Plat inconnu");
         }
     }
 }

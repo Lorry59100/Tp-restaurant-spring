@@ -1,6 +1,8 @@
 package TP.restaurant.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +21,8 @@ public class Client {
     @Column(unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @NotNull(message = "Vous devez renseigner un nom")
+    @NotBlank(message = "Le nom ne peut être vide")
     private String name;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)

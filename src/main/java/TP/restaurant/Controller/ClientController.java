@@ -22,13 +22,13 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientDto> updateClient(@PathVariable Long id, @RequestBody ClientDto clientDto) throws Exception {
+    public ResponseEntity<ClientDto> updateClient(@PathVariable Long id, @RequestBody ClientDto clientDto){
         ClientDto updatedClient = clientService.updateClient(id, clientDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedClient);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClient(@PathVariable Long id) throws Exception {
+    public ResponseEntity<String> deleteClient(@PathVariable Long id){
         String result = clientService.deleteClient(id);
         return ResponseEntity.ok(result);
     }

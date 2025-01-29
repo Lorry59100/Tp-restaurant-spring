@@ -23,13 +23,13 @@ public class DishController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DishDto> updateDish(@PathVariable Long id, @RequestBody DishDto dishDto) throws Exception {
+    public ResponseEntity<DishDto> updateDish(@PathVariable Long id, @RequestBody DishDto dishDto){
         DishDto updatedDish = dishService.updateDish(id, dishDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(updatedDish);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteDish(@PathVariable Long id) throws Exception {
+    public ResponseEntity<String> deleteDish(@PathVariable Long id){
         String result = dishService.deleteDish(id);
         return ResponseEntity.ok(result);
     }
